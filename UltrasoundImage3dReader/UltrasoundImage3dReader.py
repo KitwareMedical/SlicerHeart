@@ -203,6 +203,7 @@ class UltrasoundImage3dReaderFileReader(object):
       # retrieve ECG info
       ecg = source.GetECG()
       tableNode = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLTableNode", baseName+" ECG")
+      tableNode.SetAttribute("DICOM.instanceUIDs", slicer.dicomDatabase.instanceForFile(filePath))
       ecgSamples = self.safeArrayToNumpy(ecg.samples)
       numberOfSamples = len(ecgSamples)
       ecgTimestamps = np.arange(ecg.start_time, ecg.start_time+numberOfSamples*ecg.delta_time, ecg.delta_time)
@@ -220,6 +221,7 @@ class UltrasoundImage3dReaderFileReader(object):
 
       # set color table
       colorTableNode = slicer.mrmlScene.AddNewNodeByClass("vtkMRMLColorTableNode", baseName+" colormap")
+      colorTableNode.SetAttribute("DICOM.instanceUIDs", slicer.dicomDatabase.instanceForFile(filePath))
       colorMapArray = source.GetColorMap()
       numberOfColors = len(colorMapArray)
       colorTableNode.SetTypeToUser()
